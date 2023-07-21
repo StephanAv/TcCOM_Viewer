@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <memory>
+#include "tccom_objectmodel.h"
 
 class MainWindow : public QMainWindow
 {
@@ -10,5 +12,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private:
+
+    std::shared_ptr<TcCOM_ObjectModel> m_tccomNodeModel;
 };
 #endif // MAINWINDOW_H

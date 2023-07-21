@@ -40,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
         exit(EXIT_FAILURE);
     }
 
+    m_tccomNodeModel = std::shared_ptr<TcCOM_ObjectModel>(new TcCOM_ObjectModel(AmsNetId));
+
     this->setWindowTitle(QStringLiteral("TcCOM Viewer"));
     this->setMinimumSize(minWidth, minHeight);
 }

@@ -2,6 +2,7 @@
 #define TCCOM_OBJECTMODEL_H
 
 #include <QAbstractItemModel>
+#include <QVector>
 #include <optional>
 #include <Windows.h>
 #include "TcAdsDef.h"
@@ -18,9 +19,20 @@ struct CTCID {
 
 
 struct TcComModule {
-    CTCID class_id;
-    uint16_t state;
-    uint16_t refCnt;
+    CTCID class_id; // 0 - 15
+    uint32_t otcid; // 16 - 19
+    uint32_t parent; // 20 - 23
+    uint32_t refCnt; // 24 - 27
+    uint32_t state; // 28 - 31 (8 ^0 OP, 4 ^= SafeOp, 2 ^= PreOp)
+    uint32_t unknown_a; // 32 - 35
+    uint32_t unknown_b; // 36 - 39;
+    uint32_t unknown_c; // 40 - 43;
+    uint32_t unknown_d; // 44 - 47;
+    std::string name; // Name: 48 - 176
+
+    TcComModule(uint8_t *data);
+
+    std::shared_ptr<TcComModule> pParent;
 };
 #pragma pack(pop)
 
@@ -31,7 +43,7 @@ class TcCOM_ObjectModel //: public QAbstractItemModel
 public:
     TcCOM_ObjectModel(const QString& amsNetId);
 
-    //std::shared_ptr<>
+    QVector<std::shared_ptr<TcComModule>> m_root;
 private:
     AmsAddr					m_amsAddr = {};
     long					m_clientPort = 0;

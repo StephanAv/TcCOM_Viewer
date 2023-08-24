@@ -40,8 +40,19 @@ MainWindow::MainWindow(QWidget *parent)
         exit(EXIT_FAILURE);
     }
 
-    m_tccomNodeModel = std::shared_ptr<TcCOM_ObjectModel>(new TcCOM_ObjectModel(AmsNetId));
+    //m_tccomNodeModel = std::shared_ptr<TcCOM_ObjectModel>(new TcCOM_ObjectModel(AmsNetId));
+    m_TcComNodeModel = new TcCOM_ObjectModel(AmsNetId);
 
+    m_treeView.setModel(m_TcComNodeModel);
+
+    m_mainLayout.setSpacing(0);
+    m_mainLayout.setContentsMargins(0, 0, 0, 0);
+
+    //m_treeView
+    m_mainLayout.addWidget(&m_treeView);
+    m_centralWidget.setLayout(&m_mainLayout);
+
+    this->setCentralWidget(&m_centralWidget);
     this->setWindowTitle(QStringLiteral("TcCOM Viewer"));
     this->setMinimumSize(minWidth, minHeight);
 }

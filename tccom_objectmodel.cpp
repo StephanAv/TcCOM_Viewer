@@ -68,8 +68,6 @@ TcCOM_ObjectModel::TcCOM_ObjectModel(const QString& amsNetId)
         throw std::runtime_error("sErr.str()");
     }
 
-
-
     for(int i = 0; i < m_nTcComModules; i++)
     {
 
@@ -83,7 +81,84 @@ TcCOM_ObjectModel::TcCOM_ObjectModel(const QString& amsNetId)
     }
 
     // find and link parents
-
-
-    int x = 3;
+    for(auto& mod: m_root)
+    {
+        if(mod->parent != 0){
+            for(auto& parent_mod : qAsConst(m_root))
+            {
+                if(parent_mod->otcid == mod->parent)
+                {
+                    mod->pParent = parent_mod;
+                }
+            }
+        }
+    }
 }
+
+int TcCOM_ObjectModel::rowCount(const QModelIndex &parent) const
+{
+    return 0;
+}
+
+int TcCOM_ObjectModel::columnCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+    return 1;
+}
+
+QModelIndex TcCOM_ObjectModel::index(int row, int column, const QModelIndex &parent) const
+{
+    TcComModule* _node = Q_NULLPTR;
+    std::shared_ptr<TcComModule> node;
+
+    return QModelIndex();
+
+//    if(parent.isValid()){
+//        _node = reinterpret_cast<AdsFileInfoNode*>(parent.internalPointer());
+//        node = getPtr(_node);
+//        if(node->m_children.count() > row){
+//            node = node->m_children[row];
+//            return createIndex(row, column, node.get());
+//        } else {
+//            return QModelIndex();
+//        }
+//    } else {
+//        node = m_root[row];
+//        return createIndex(row, column, node.get());
+//    }
+}
+
+QModelIndex TcCOM_ObjectModel::parent(const QModelIndex &index) const
+{
+    TcComModule* _node = Q_NULLPTR;
+    std::shared_ptr<TcComModule> node;
+
+    return QModelIndex();
+
+//    if(!index.isValid()){
+//        return QModelIndex();
+//    }
+
+//    node = reinterpret_cast<TcComModule*>(index.internalPointer());
+
+//    if(!node->pParent){
+//        return QModelIndex();
+//    } else {
+
+//        std::shared_ptr<TcComModule> parent = node->pParent;
+
+//        for(int row = 0; row < parent->m_children.count(); row++){
+//            if(parent->m_children[row].get() == node){
+//                return createIndex(row, 0, parent.get());
+//                break;
+//            }
+//        }
+//    }
+//    return QModelIndex();
+}
+
+QVariant TcCOM_ObjectModel::data(const QModelIndex &index, int role) const
+{
+    return QVariant();
+}
+
